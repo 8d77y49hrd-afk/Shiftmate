@@ -53,22 +53,30 @@ function item(s){let j=getJobs()[+s.job];if(!j)return"";let[h,i]=calc(s);return 
 function render(){let[a,b]=range(),lab=`${a.toLocaleDateString("en-AU",{day:"numeric",month:"short"})} – ${b.toLocaleDateString("en-AU",{day:"numeric",month:"short"})}`;document.querySelectorAll(".weekLabel").forEach(x=>x.textContent=lab);let js=getJobs(),ws=shifts().filter(s=>{let d=pd(s.date);return d>=a&&d<=b}),th=0,ti=0,T=js.map(()=>[0,0]);ws.forEach(s=>{let q=calc(s);th+=q[0];ti+=q[1];if(T[+s.job]){T[+s.job][0]+=q[0];T[+s.job][1]+=q[1]}});weekHours.textContent=th.toFixed(1)+"h";weekIncome.textContent=money(ti);jobTotals.innerHTML=js.map((j,i)=>`<div class="row"><span><i class="dot ${j.color}"></i>${j.name}<div class="muted">${T[i][0].toFixed(1)} hours</div></span><b>${money(T[i][1])}</b></div>`).join("");rosterList.innerHTML=ws.length?ws.sort((a,b)=>(a.date+a.start).localeCompare(b.date+b.start)).map(item).join(""):'<div class="empty">No shifts this week</div>';let up=shifts().filter(s=>s.date>=ymd(new Date())).sort((a,b)=>(a.date+a.start).localeCompare(b.date+b.start)).slice(0,4);upcoming.innerHTML=up.length?up.map(item).join(""):'<div class="empty">No upcoming shifts</div>';let ah=0,ai=0;shifts().forEach(s=>{let q=calc(s);ah+=q[0];ai+=q[1]});allHours.textContent=ah.toFixed(1)+"h";allIncome.textContent=money(ai);jobSettings.innerHTML=js.map(j=>`<div class="row"><span>${j.name}<div class="muted">${j.pay}</div></span><b>${money(j.rate)}/hr</b></div>`).join("")}
 
 function addNextWeek(){
-  let all=shifts(), ws=weekStart(viewDate), we=new Date(ws);we.setDate(we.getDate()+7);
-  let current=all.filter(s=>{let d=parseDate(s.date);return d>=ws&&d<we});
+  let all=shifts(), r=range(), ws=r[0], we=r[1];
+  let current=all.filter(s=>{let d=pd(s.date);return d>=ws&&d<we});
   if(!current.length){alert("There are no shifts in this week to copy.");return}
   let additions=[], skipped=0;
   current.forEach(s=>{
-    let d=parseDate(s.date);d.setDate(d.getDate()+7);let nd=ymd(d);
-    let exists=all.concat(additions).some(x=>x.date===nd&&Number(x.job)===Number(s.job)&&x.start===s.start&&x.finish===s.finish);
+    let d=pd(s.date);d.setDate(d.getDate()+7);let nd=ymd(d);
+    let exists=all.concat(additions).some(x=>
+      x.date===nd &&
+      Number(x.job)===Number(s.job) &&
+      x.start===s.start &&
+      x.finish===s.finish
+    );
     if(exists){skipped++;return}
     additions.push({...s,id:Date.now()+additions.length+1,date:nd});
   });
-  if(!additions.length){alert("Next week already has these shifts. Nothing was duplicated.");return}
+  if(!additions.length){
+    alert("Next week already has these shifts. Nothing was duplicated.");
+    return;
+  }
   if(!confirm(`Add ${additions.length} shift(s) to next week?${skipped?`\n${skipped} existing shift(s) will be skipped.`:""}`))return;
-  put(all.concat(additions));render();
+  put(all.concat(additions));
+  render();
   alert(`${additions.length} shift(s) added to next week.${skipped?` ${skipped} duplicate(s) skipped.`:""}`);
 }
-
 function moveWeek(n){off+=n;render()}function screen(id,b){document.querySelectorAll(".screen").forEach(x=>x.classList.remove("active"));$(id).classList.add("active");document.querySelectorAll("nav button").forEach(x=>x.classList.remove("active"));b.classList.add("active");render()}
 function defaultBreak(){let j=getJobs()[+job.value];brk.value=j?j.break:0}function openAdd(){dlgTitle.textContent="Add Shift";sid.value="";deleteBtn.style.display="none";date.value=ymd(new Date());start.value="09:00";finish.value="17:00";job.value="0";defaultBreak();dlg.showModal()}
 function edit(id){let s=shifts().find(x=>String(x.id)===String(id));if(!s)return;dlgTitle.textContent="Edit Shift";sid.value=s.id;deleteBtn.style.display="block";job.value=s.job;date.value=s.date;start.value=s.start;finish.value=s.finish;brk.value=s.brk;dlg.showModal()}
