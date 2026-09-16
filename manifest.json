@@ -1,0 +1,10 @@
+{
+  "name": "ShiftMate \u2013 Roster & Income",
+  "short_name": "ShiftMate",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f5f6f8",
+  "theme_color": "#111827",
+  "description": "Personal multi-job roster, hours and gross income tracker."
+}
