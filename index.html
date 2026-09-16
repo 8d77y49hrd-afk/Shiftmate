@@ -58,5 +58,27 @@ function safeMigration(){
   }
 }
 
-safeMigration();setupUI();if(!localStorage.getItem("sm_setup"))setup.style.display="block";refreshJobs();render();if("serviceWorker"in navigator)navigator.serviceWorker.register("./sw.js");
+
+function migrateLegacyUser(){
+  if(localStorage.getItem("sm_setup") || getJobs().length) return;
+  let raw=localStorage.getItem("sm_shifts");
+  if(!raw) return; // genuinely new user -> setup screen
+  try{
+    let old=JSON.parse(raw);
+    if(!Array.isArray(old) || !old.length) return;
+    // Original ShiftMate job-index mapping. Stored locally only after migration.
+    let legacy=[
+      {name:"Restaurant",rate:33,break:30,pay:"Weekly",color:"c0"},
+      {name:"Aged Care",rate:28,break:30,pay:"Fortnightly",color:"c1"},
+      {name:"Cafe",rate:18,break:0,pay:"Fortnightly",color:"c2"}
+    ];
+    let used=[...new Set(old.map(s=>Number(s.job)).filter(n=>Number.isInteger(n)&&n>=0&&n<3))];
+    if(!used.length) return;
+    setJobs(legacy);
+    localStorage.setItem("sm_setup","1");
+    localStorage.setItem("sm_migrated_from_legacy","1");
+  }catch(e){ console.warn("Legacy migration skipped safely.",e); }
+}
+
+safeMigration();migrateLegacyUser();setupUI();if(!localStorage.getItem("sm_setup"))setup.style.display="block";refreshJobs();render();if("serviceWorker"in navigator)navigator.serviceWorker.register("./sw.js");
 </script></body></html>
