@@ -1,121 +1,49 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
-<meta name="theme-color" content="#111827">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="ShiftMate">
-<title>ShiftMate</title>
-<link rel="manifest" href="./manifest.json">
-<link rel="apple-touch-icon" href="./icon.svg">
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+<meta name="theme-color" content="#111827"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="ShiftMate">
+<title>ShiftMate</title><link rel="manifest" href="./manifest.json"><link rel="apple-touch-icon" href="./icon.svg">
 <style>
-:root{--bg:#f5f6f8;--card:#fff;--ink:#111827;--muted:#667085;--line:#e5e7eb}
-*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+:root{--bg:#f5f6f8;--card:#fff;--ink:#111827;--muted:#667085;--line:#e5e7eb}*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text",system-ui,sans-serif;background:var(--bg);color:var(--ink);padding-top:env(safe-area-inset-top)}
-header{background:#111827;color:#fff;padding:18px 18px 15px;position:sticky;top:0;z-index:5}
-h1{font-size:25px;margin:0}.sub{font-size:13px;opacity:.7;margin-top:3px}
-main{max-width:720px;margin:auto;padding:15px 15px calc(105px + env(safe-area-inset-bottom))}
-.card{background:#fff;border-radius:18px;padding:16px;margin-bottom:12px;box-shadow:0 1px 3px #0000000c;border:1px solid #e9eaec}
+header{background:#111827;color:white;padding:18px;position:sticky;top:0;z-index:5}h1{margin:0;font-size:25px}.sub{font-size:13px;opacity:.7;margin-top:3px}
+main{max-width:720px;margin:auto;padding:15px 15px calc(115px + env(safe-area-inset-bottom))}.card{background:white;border:1px solid #e9eaec;border-radius:18px;padding:16px;margin-bottom:12px}
 .grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.metric{font-size:26px;font-weight:800;margin-top:5px}.label{font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);font-weight:750}
-h2{font-size:18px;margin:2px 0 10px}.row{display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px solid var(--line);gap:10px}.row:last-child{border:0}
-.dot{width:10px;height:10px;border-radius:50%;display:inline-block;margin-right:7px}.Restaurant{background:#ef4444}.AgedCare{background:#3b82f6}.Cafe{background:#f59e0b}
-.muted{font-size:12.5px;color:var(--muted);margin-top:3px}.right{text-align:right}.strong{font-weight:750}
-button{font:inherit}.btn{border:0;border-radius:12px;padding:11px 14px;font-weight:700}.dark{background:#111827;color:white}.light{background:#e9eaec;color:#111827}
-.weeknav{display:flex;justify-content:space-between;align-items:center;margin:2px 0 12px}
-.fab{position:fixed;z-index:10;right:18px;bottom:calc(73px + env(safe-area-inset-bottom));border:0;border-radius:999px;padding:15px 18px;background:#111827;color:white;font-weight:800;box-shadow:0 8px 28px #0004}
-nav{position:fixed;z-index:9;left:0;right:0;bottom:0;display:flex;background:#fff;border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom)}
-nav button{flex:1;border:0;background:#fff;padding:13px 2px 14px;color:#8a8f98;font-weight:700}nav button.active{color:#111827}
-.screen{display:none}.screen.active{display:block}
+h2{font-size:18px;margin:2px 0 10px}.row{display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px solid var(--line);gap:10px}.row:last-child{border:0}.muted{font-size:12.5px;color:var(--muted);margin-top:3px}.right{text-align:right}
+.dot{width:10px;height:10px;border-radius:50%;display:inline-block;margin-right:7px}.c0{background:#ef4444}.c1{background:#3b82f6}.c2{background:#f59e0b}.c3{background:#10b981}.c4{background:#8b5cf6}
+.btn{border:0;border-radius:12px;padding:11px 14px;font-weight:700}.dark{background:#111827;color:white}.light{background:#e9eaec;color:#111827}.danger{background:#fee2e2;color:#991b1b}
+.weeknav{display:flex;justify-content:space-between;align-items:center;margin:2px 0 12px}.fab{position:fixed;z-index:10;right:18px;bottom:calc(76px + env(safe-area-inset-bottom));border:0;border-radius:999px;padding:15px 18px;background:#111827;color:white;font-weight:800;box-shadow:0 8px 28px #0004}
+nav{position:fixed;z-index:9;left:0;right:0;bottom:0;display:flex;background:white;border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom)}nav button{flex:1;border:0;background:white;padding:13px 2px 14px;color:#8a8f98;font-weight:700}nav button.active{color:#111827}.screen{display:none}.screen.active{display:block}
 dialog{width:min(92vw,500px);border:0;border-radius:20px;padding:0;box-shadow:0 24px 80px #0006}dialog::backdrop{background:#0008}.modal{padding:20px}
-label{display:block;font-size:13px;font-weight:750;margin:13px 0 5px}input,select{width:100%;border:1px solid #d0d5dd;border-radius:11px;padding:12px;font:inherit;background:white}.formgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.actions{display:flex;justify-content:flex-end;gap:8px;margin-top:18px}
-.tip{background:#eef2ff;border:1px solid #dfe4ff;border-radius:14px;padding:13px;font-size:13px;line-height:1.4;margin-bottom:12px}
-.empty{text-align:center;color:var(--muted);padding:25px}
-</style>
-</head>
-<body>
-<header><h1>ShiftMate</h1><div class="sub">Your roster & income tracker</div></header>
-<main>
-<section id="dashboard" class="screen active">
-<div id="installTip" class="tip">On iPhone: open this page in Safari → tap <b>Share</b> → <b>Add to Home Screen</b>.</div>
-<div class="weeknav"><button class="btn light" onclick="moveWeek(-1)">‹</button><strong class="weekLabel"></strong><button class="btn light" onclick="moveWeek(1)">›</button></div>
-<div class="grid"><div class="card"><div class="label">Paid hours</div><div class="metric" id="weekHours">0h</div></div><div class="card"><div class="label">Gross income</div><div class="metric" id="weekIncome">$0</div></div></div>
-<div class="card"><h2>By workplace</h2><div id="jobTotals"></div></div>
-<div class="card"><h2>Upcoming</h2><div id="upcoming"></div></div>
-</section>
-<section id="roster" class="screen">
-<div class="weeknav"><button class="btn light" onclick="moveWeek(-1)">‹</button><strong class="weekLabel"></strong><button class="btn light" onclick="moveWeek(1)">›</button></div>
-<div class="card"><h2>Roster</h2><div id="rosterList"></div></div>
-</section>
-<section id="earnings" class="screen">
-<div class="card"><h2>Workplaces</h2>
-<div class="row"><span><i class="dot Restaurant"></i>Restaurant<div class="muted">Weekly pay</div></span><b>$33/hr</b></div>
-<div class="row"><span><i class="dot AgedCare"></i>Aged Care<div class="muted">Fortnightly pay</div></span><b>$28/hr</b></div>
-<div class="row"><span><i class="dot Cafe"></i>Cafe<div class="muted">Fortnightly pay</div></span><b>$18/hr</b></div>
-</div>
-<div class="card"><h2>All-time estimate</h2><div class="grid"><div><div class="label">Hours</div><div class="metric" id="allHours">0h</div></div><div><div class="label">Gross</div><div class="metric" id="allIncome">$0</div></div></div></div>
-<div class="muted">Before tax. Penalty rates are not included in this test version. Tap <b>＋ Calendar</b> on a shift to add it to iPhone Calendar with an alert 1 day before.</div>
-</section>
-</main>
-<button class="fab" onclick="openAdd()">＋ Add Shift</button>
-<nav><button class="active" onclick="screen('dashboard',this)">Dashboard</button><button onclick="screen('roster',this)">Roster</button><button onclick="screen('earnings',this)">Earnings</button></nav>
-<dialog id="dlg"><form class="modal" onsubmit="save(event)">
-<h2 id="dlgTitle">Add Shift</h2><input type="hidden" id="sid">
-<label>Workplace</label><select id="job" onchange="defaultBreak()"><option>Restaurant</option><option>Aged Care</option><option>Cafe</option></select>
-<label>Date</label><input id="date" type="date" required>
-<div class="formgrid"><div><label>Start</label><input id="start" type="time" required></div><div><label>Finish</label><input id="finish" type="time" required></div></div>
-<label>Unpaid break (minutes)</label><input id="brk" type="number" min="0" step="5">
-<div class="actions"><button type="button" class="btn light" onclick="dlg.close()">Cancel</button><button class="btn dark">Save</button></div>
-</form></dialog>
+label{display:block;font-size:13px;font-weight:750;margin:13px 0 5px}input,select{width:100%;border:1px solid #d0d5dd;border-radius:11px;padding:12px;font:inherit;background:white}.formgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.actions{display:flex;justify-content:flex-end;gap:8px;margin-top:18px}.empty{text-align:center;color:var(--muted);padding:25px}
+.setup{position:fixed;inset:0;z-index:50;background:#f5f6f8;padding:calc(30px + env(safe-area-inset-top)) 18px 30px;overflow:auto}.setupbox{max-width:520px;margin:auto}.setup h1{font-size:32px}.jobbox{background:white;border-radius:16px;padding:14px;margin:10px 0;border:1px solid var(--line)}
+</style></head><body>
+<div id="setup" class="setup" style="display:none"><div class="setupbox"><h1>Welcome to ShiftMate</h1><p class="muted">Set up your workplaces. These details are saved only on this device, not in the public app code.</p>
+<div id="setupJobs"></div><button class="btn dark" style="width:100%;margin-top:10px" onclick="finishSetup()">Start using ShiftMate</button></div></div>
+<header><h1>ShiftMate</h1><div class="sub">Your roster & income tracker</div></header><main>
+<section id="dashboard" class="screen active"><div class="weeknav"><button class="btn light" onclick="moveWeek(-1)">‹</button><strong class="weekLabel"></strong><button class="btn light" onclick="moveWeek(1)">›</button></div><div class="grid"><div class="card"><div class="label">Paid hours</div><div class="metric" id="weekHours"></div></div><div class="card"><div class="label">Gross income</div><div class="metric" id="weekIncome"></div></div></div><div class="card"><h2>By workplace</h2><div id="jobTotals"></div></div><div class="card"><h2>Upcoming</h2><div id="upcoming"></div></div></section>
+<section id="roster" class="screen"><div class="weeknav"><button class="btn light" onclick="moveWeek(-1)">‹</button><strong class="weekLabel"></strong><button class="btn light" onclick="moveWeek(1)">›</button></div><div class="card"><h2>Roster</h2><div id="rosterList"></div></div></section>
+<section id="earnings" class="screen"><div class="card"><h2>My workplaces</h2><div id="jobSettings"></div><button class="btn light" onclick="resetSetup()">Edit workplaces</button></div><div class="card"><h2>All-time estimate</h2><div class="grid"><div><div class="label">Hours</div><div class="metric" id="allHours"></div></div><div><div class="label">Gross</div><div class="metric" id="allIncome"></div></div></div></div><div class="muted">Before tax. Tap Calendar on a shift to add an iPhone Calendar alert 1 day before.</div></section>
+</main><button class="fab" onclick="openAdd()">＋ Add Shift</button><nav><button class="active" onclick="screen('dashboard',this)">Dashboard</button><button onclick="screen('roster',this)">Roster</button><button onclick="screen('earnings',this)">Earnings</button></nav>
+<dialog id="dlg"><form class="modal" onsubmit="save(event)"><h2 id="dlgTitle">Add Shift</h2><input type="hidden" id="sid"><label>Workplace</label><select id="job" onchange="defaultBreak()"></select><label>Date</label><input id="date" type="date" required><div class="formgrid"><div><label>Start</label><input id="start" type="time" required></div><div><label>Finish</label><input id="finish" type="time" required></div></div><label>Unpaid break (minutes)</label><input id="brk" type="number" min="0" step="5"><div class="actions"><button type="button" class="btn light" onclick="dlg.close()">Cancel</button><button class="btn dark">Save</button></div></form></dialog>
 <script>
-const J={"Restaurant":{r:33,c:"Restaurant"},"Aged Care":{r:28,c:"AgedCare"},"Cafe":{r:18,c:"Cafe"}};
-let off=0; const $=id=>document.getElementById(id), pad=n=>String(n).padStart(2,"0");
-function ymd(d){return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`}
-function pd(s){let [y,m,d]=s.split("-").map(Number);return new Date(y,m-1,d)}
-function mon(d){d=new Date(d);let n=(d.getDay()+6)%7;d.setHours(0,0,0,0);d.setDate(d.getDate()-n);return d}
-function range(){let a=mon(new Date());a.setDate(a.getDate()+off*7);let b=new Date(a);b.setDate(b.getDate()+6);return[a,b]}
-function shifts(){return JSON.parse(localStorage.getItem("sm_shifts")||"[]")} function put(x){localStorage.setItem("sm_shifts",JSON.stringify(x))}
-function seed(){if(localStorage.getItem("sm_seed"))return;let [m]=range();let mk=(n,j,s,e,b)=>({id:Date.now()+Math.random(),date:ymd(new Date(m.getFullYear(),m.getMonth(),m.getDate()+n)),job:j,start:s,finish:e,brk:b});put([mk(1,"Restaurant","17:00","23:00",30),mk(4,"Aged Care","06:00","14:00",30),mk(5,"Cafe","08:00","12:00",0),mk(6,"Restaurant","11:30","16:00",30)]);localStorage.setItem("sm_seed","1")}
-function calc(s){let [a,b]=s.start.split(":").map(Number),[c,d]=s.finish.split(":").map(Number),m=c*60+d-a*60-b;if(m<0)m+=1440;m=Math.max(0,m-(+s.brk||0));let h=m/60;return[h,h*J[s.job].r]}
-const money=n=>new Intl.NumberFormat("en-AU",{style:"currency",currency:"AUD"}).format(n);
+let off=0;const $=x=>document.getElementById(x),pad=n=>String(n).padStart(2,"0");const money=n=>new Intl.NumberFormat("en-AU",{style:"currency",currency:"AUD"}).format(n);
+function getJobs(){return JSON.parse(localStorage.getItem("sm_jobs")||"[]")} function setJobs(x){localStorage.setItem("sm_jobs",JSON.stringify(x))}
+function shifts(){return JSON.parse(localStorage.getItem("sm_shifts")||"[]")}function put(x){localStorage.setItem("sm_shifts",JSON.stringify(x))}
+function setupUI(){let names=["Workplace 1","Workplace 2","Workplace 3"];setupJobs.innerHTML=names.map((n,i)=>`<div class="jobbox"><b>Job ${i+1}</b><label>Workplace name</label><input id="jn${i}" placeholder="${n}"><div class="formgrid"><div><label>Hourly rate ($)</label><input id="jr${i}" type="number" step=".01" min="0"></div><div><label>Default unpaid break</label><input id="jb${i}" type="number" value="0" min="0" step="5"></div></div><label>Pay cycle</label><select id="jp${i}"><option>Weekly</option><option>Fortnightly</option><option>Monthly</option></select></div>`).join("")}
+function finishSetup(){let a=[];for(let i=0;i<3;i++){let n=$("jn"+i).value.trim(),r=+$("jr"+i).value;if(n&&r>=0)a.push({name:n,rate:r,break:+$("jb"+i).value||0,pay:$("jp"+i).value,color:"c"+i})}if(!a.length)return alert("Add at least one workplace.");setJobs(a);localStorage.setItem("sm_setup","1");setup.style.display="none";refreshJobs();render()}
+function resetSetup(){if(!confirm("Edit workplace setup? Your existing shifts stay on this device."))return;setupUI();let j=getJobs();j.forEach((v,i)=>{if(i<3){$("jn"+i).value=v.name;$("jr"+i).value=v.rate;$("jb"+i).value=v.break;$("jp"+i).value=v.pay}});setup.style.display="block"}
+function refreshJobs(){job.innerHTML=getJobs().map((j,i)=>`<option value="${i}">${j.name}</option>`).join("")}
+function ymd(d){return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`}function pd(s){let[y,m,d]=s.split("-").map(Number);return new Date(y,m-1,d)}function mon(d){d=new Date(d);let n=(d.getDay()+6)%7;d.setHours(0,0,0,0);d.setDate(d.getDate()-n);return d}function range(){let a=mon(new Date());a.setDate(a.getDate()+off*7);let b=new Date(a);b.setDate(b.getDate()+6);return[a,b]}
+function calc(s){let j=getJobs()[+s.job];if(!j)return[0,0];let[a,b]=s.start.split(":").map(Number),[c,d]=s.finish.split(":").map(Number),m=c*60+d-a*60-b;if(m<0)m+=1440;m=Math.max(0,m-(+s.brk||0));let h=m/60;return[h,h*j.rate]}
 const time=t=>{let[a,b]=t.split(":");return new Date(2000,0,1,+a,+b).toLocaleTimeString("en-AU",{hour:"numeric",minute:"2-digit"})}
-function item(s){let[h,i]=calc(s);return `<div class="row" onclick="edit('${s.id}')"><span><span class="strong">${pd(s.date).toLocaleDateString("en-AU",{weekday:"short",day:"numeric",month:"short"})}</span><div class="muted"><i class="dot ${J[s.job].c}"></i>${s.job} • ${time(s.start)}–${time(s.finish)}${s.brk?` • ${s.brk}m break`:""}</div></span><span class="right"><b>${h.toFixed(1)}h</b><div class="muted">${money(i)}</div><button class="btn light" style="margin-top:7px;padding:7px 9px;font-size:11px" onclick="event.stopPropagation();calendarShift('${s.id}')">＋ Calendar</button></span></div>`}
-function render(){let[a,b]=range(),lab=`${a.toLocaleDateString("en-AU",{day:"numeric",month:"short"})} – ${b.toLocaleDateString("en-AU",{day:"numeric",month:"short"})}`;document.querySelectorAll(".weekLabel").forEach(x=>x.textContent=lab);
-let ws=shifts().filter(s=>{let d=pd(s.date);return d>=a&&d<=b}).sort((x,y)=>(x.date+x.start).localeCompare(y.date+y.start)), th=0,ti=0,T={};Object.keys(J).forEach(j=>T[j]=[0,0]);ws.forEach(s=>{let q=calc(s);th+=q[0];ti+=q[1];T[s.job][0]+=q[0];T[s.job][1]+=q[1]});$("weekHours").textContent=th.toFixed(1)+"h";$("weekIncome").textContent=money(ti);
-$("jobTotals").innerHTML=Object.keys(J).map(j=>`<div class="row"><span><i class="dot ${J[j].c}"></i>${j}<div class="muted">${T[j][0].toFixed(1)} hours</div></span><b>${money(T[j][1])}</b></div>`).join("");
-$("rosterList").innerHTML=ws.length?ws.map(item).join(""):'<div class="empty">No shifts this week</div>';
-let today=ymd(new Date()),up=shifts().filter(s=>s.date>=today).sort((x,y)=>(x.date+x.start).localeCompare(y.date+y.start)).slice(0,4);$("upcoming").innerHTML=up.length?up.map(item).join(""):'<div class="empty">No upcoming shifts</div>';
-let ah=0,ai=0;shifts().forEach(s=>{let q=calc(s);ah+=q[0];ai+=q[1]});$("allHours").textContent=ah.toFixed(1)+"h";$("allIncome").textContent=money(ai)}
-function moveWeek(n){off+=n;render()} function screen(id,b){document.querySelectorAll(".screen").forEach(x=>x.classList.remove("active"));$(id).classList.add("active");document.querySelectorAll("nav button").forEach(x=>x.classList.remove("active"));b.classList.add("active");render()}
-function defaultBreak(){$("brk").value=$("job").value==="Cafe"?0:30}
-function openAdd(){$("dlgTitle").textContent="Add Shift";$("sid").value="";$("job").value="Restaurant";$("date").value=ymd(new Date());$("start").value="17:00";$("finish").value="23:00";$("brk").value=30;$("dlg").showModal()}
-function edit(id){let s=shifts().find(x=>String(x.id)===String(id));if(!s)return;$("dlgTitle").textContent="Edit Shift";$("sid").value=s.id;$("job").value=s.job;$("date").value=s.date;$("start").value=s.start;$("finish").value=s.finish;$("brk").value=s.brk;$("dlg").showModal()}
-function save(e){e.preventDefault();let x=shifts(),s={id:$("sid").value||Date.now(),job:$("job").value,date:$("date").value,start:$("start").value,finish:$("finish").value,brk:+$("brk").value||0},i=x.findIndex(v=>String(v.id)===String(s.id));if(i>=0)x[i]=s;else x.push(s);put(x);$("dlg").close();render()}
-
-function icsStamp(date,time){
-  let [y,m,d]=date.split("-"),[h,mi]=time.split(":");
-  return `${y}${m}${d}T${h}${mi}00`;
-}
-function calendarShift(id){
-  let s=shifts().find(x=>String(x.id)===String(id)); if(!s)return;
-  let endDate=s.date;
-  // Handle overnight shifts.
-  if(s.finish<=s.start){let d=pd(s.date);d.setDate(d.getDate()+1);endDate=ymd(d)}
-  let uid=`shiftmate-${s.id}@shiftmate`;
-  let title=`${s.job} shift`;
-  let desc=`ShiftMate: ${s.job} shift. Estimated gross pay ${money(calc(s)[1])}.`;
-  let ics=[
-    "BEGIN:VCALENDAR","VERSION:2.0","PRODID:-//ShiftMate//EN","CALSCALE:GREGORIAN",
-    "BEGIN:VEVENT",`UID:${uid}`,`DTSTART:${icsStamp(s.date,s.start)}`,`DTEND:${icsStamp(endDate,s.finish)}`,
-    `SUMMARY:${title}`,`DESCRIPTION:${desc}`,
-    "BEGIN:VALARM","TRIGGER:-P1D","ACTION:DISPLAY",`DESCRIPTION:${s.job} shift tomorrow`,"END:VALARM",
-    "END:VEVENT","END:VCALENDAR"
-  ].join("\r\n");
-  let blob=new Blob([ics],{type:"text/calendar;charset=utf-8"}),url=URL.createObjectURL(blob),a=document.createElement("a");
-  a.href=url;a.download=`${s.job.replaceAll(" ","-")}-${s.date}.ics`;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);
-}
-
-seed();render(); if(window.matchMedia("(display-mode: standalone)").matches)$("installTip").style.display="none"; if("serviceWorker" in navigator)navigator.serviceWorker.register("./sw.js");
-</script>
-</body></html>
+function item(s){let j=getJobs()[+s.job];if(!j)return"";let[h,i]=calc(s);return `<div class="row" onclick="edit('${s.id}')"><span><b>${pd(s.date).toLocaleDateString("en-AU",{weekday:"short",day:"numeric",month:"short"})}</b><div class="muted"><i class="dot ${j.color}"></i>${j.name} • ${time(s.start)}–${time(s.finish)}${s.brk?` • ${s.brk}m break`:""}</div></span><span class="right"><b>${h.toFixed(1)}h</b><div class="muted">${money(i)}</div><button class="btn light" style="margin-top:6px;padding:7px;font-size:11px" onclick="event.stopPropagation();calendarShift('${s.id}')">＋ Calendar</button></span></div>`}
+function render(){let[a,b]=range(),lab=`${a.toLocaleDateString("en-AU",{day:"numeric",month:"short"})} – ${b.toLocaleDateString("en-AU",{day:"numeric",month:"short"})}`;document.querySelectorAll(".weekLabel").forEach(x=>x.textContent=lab);let js=getJobs(),ws=shifts().filter(s=>{let d=pd(s.date);return d>=a&&d<=b}),th=0,ti=0,T=js.map(()=>[0,0]);ws.forEach(s=>{let q=calc(s);th+=q[0];ti+=q[1];if(T[+s.job]){T[+s.job][0]+=q[0];T[+s.job][1]+=q[1]}});weekHours.textContent=th.toFixed(1)+"h";weekIncome.textContent=money(ti);jobTotals.innerHTML=js.map((j,i)=>`<div class="row"><span><i class="dot ${j.color}"></i>${j.name}<div class="muted">${T[i][0].toFixed(1)} hours</div></span><b>${money(T[i][1])}</b></div>`).join("");rosterList.innerHTML=ws.length?ws.sort((a,b)=>(a.date+a.start).localeCompare(b.date+b.start)).map(item).join(""):'<div class="empty">No shifts this week</div>';let up=shifts().filter(s=>s.date>=ymd(new Date())).sort((a,b)=>(a.date+a.start).localeCompare(b.date+b.start)).slice(0,4);upcoming.innerHTML=up.length?up.map(item).join(""):'<div class="empty">No upcoming shifts</div>';let ah=0,ai=0;shifts().forEach(s=>{let q=calc(s);ah+=q[0];ai+=q[1]});allHours.textContent=ah.toFixed(1)+"h";allIncome.textContent=money(ai);jobSettings.innerHTML=js.map(j=>`<div class="row"><span>${j.name}<div class="muted">${j.pay}</div></span><b>${money(j.rate)}/hr</b></div>`).join("")}
+function moveWeek(n){off+=n;render()}function screen(id,b){document.querySelectorAll(".screen").forEach(x=>x.classList.remove("active"));$(id).classList.add("active");document.querySelectorAll("nav button").forEach(x=>x.classList.remove("active"));b.classList.add("active");render()}
+function defaultBreak(){let j=getJobs()[+job.value];brk.value=j?j.break:0}function openAdd(){dlgTitle.textContent="Add Shift";sid.value="";date.value=ymd(new Date());start.value="09:00";finish.value="17:00";job.value="0";defaultBreak();dlg.showModal()}
+function edit(id){let s=shifts().find(x=>String(x.id)===String(id));if(!s)return;dlgTitle.textContent="Edit Shift";sid.value=s.id;job.value=s.job;date.value=s.date;start.value=s.start;finish.value=s.finish;brk.value=s.brk;dlg.showModal()}
+function save(e){e.preventDefault();let x=shifts(),s={id:sid.value||Date.now(),job:job.value,date:date.value,start:start.value,finish:finish.value,brk:+brk.value||0},i=x.findIndex(v=>String(v.id)===String(s.id));if(i>=0)x[i]=s;else x.push(s);put(x);dlg.close();render()}
+function calendarShift(id){let s=shifts().find(x=>String(x.id)===String(id)),j=getJobs()[+s.job];if(!s||!j)return;let ed=s.date;if(s.finish<=s.start){let d=pd(s.date);d.setDate(d.getDate()+1);ed=ymd(d)}let stamp=(d,t)=>d.replaceAll("-","")+"T"+t.replace(":","")+"00";let ics=["BEGIN:VCALENDAR","VERSION:2.0","BEGIN:VEVENT",`UID:sm-${s.id}`,`DTSTART:${stamp(s.date,s.start)}`,`DTEND:${stamp(ed,s.finish)}`,`SUMMARY:${j.name} shift`,"BEGIN:VALARM","TRIGGER:-P1D","ACTION:DISPLAY",`DESCRIPTION:${j.name} shift tomorrow`,"END:VALARM","END:VEVENT","END:VCALENDAR"].join("\r\n");let u=URL.createObjectURL(new Blob([ics],{type:"text/calendar"})),a=document.createElement("a");a.href=u;a.download=`shift-${s.date}.ics`;a.click();setTimeout(()=>URL.revokeObjectURL(u),1000)}
+setupUI();if(!localStorage.getItem("sm_setup"))setup.style.display="block";refreshJobs();render();if("serviceWorker"in navigator)navigator.serviceWorker.register("./sw.js");
+</script></body></html>
