@@ -24,10 +24,20 @@ label{display:block;font-size:13px;font-weight:750;margin:13px 0 5px}input,selec
 <header><h1>ShiftMate</h1><div class="sub">Your roster & income tracker</div></header><main>
 <section id="dashboard" class="screen active"><div class="weeknav"><button class="btn light" onclick="moveWeek(-1)">‹</button><strong class="weekLabel"></strong><button class="btn light" onclick="moveWeek(1)">›</button></div><div class="grid"><div class="card"><div class="label">Paid hours</div><div class="metric" id="weekHours"></div></div><div class="card"><div class="label">Gross income</div><div class="metric" id="weekIncome"></div></div></div><div class="card"><h2>By workplace</h2><div id="jobTotals"></div></div><div class="card"><h2>Upcoming</h2><div id="upcoming"></div></div></section>
 <section id="roster" class="screen"><div class="weeknav"><button class="btn light" onclick="moveWeek(-1)">‹</button><strong class="weekLabel"></strong><button class="btn light" onclick="moveWeek(1)">›</button></div><div class="card"><h2>Roster</h2><div id="rosterList"></div></div></section>
-<section id="earnings" class="screen"><div class="card"><h2>My workplaces</h2><div id="jobSettings"></div><button class="btn light" onclick="resetSetup()">Edit workplaces</button></div><div class="card"><h2>All-time estimate</h2><div class="grid"><div><div class="label">Hours</div><div class="metric" id="allHours"></div></div><div><div class="label">Gross</div><div class="metric" id="allIncome"></div></div></div></div><div class="muted">Before tax. Tap Calendar on a shift to add an iPhone Calendar alert 1 day before.</div></section>
+<section id="earnings" class="screen"><div class="card"><h2>My workplaces</h2><div id="jobSettings"></div><button class="btn light" onclick="resetSetup()">Edit workplaces</button></div><div class="card"><h2>All-time estimate</h2><div class="grid"><div><div class="label">Hours</div><div class="metric" id="allHours"></div></div><div><div class="label">Gross</div><div class="metric" id="allIncome"></div></div></div></div><div class="card"><h2>Move to Home Screen</h2>
+<div class="muted" style="margin-bottom:12px">Transfer your ShiftMate data between Safari and the Home Screen app using a one-time copy/paste code. Nothing is uploaded.</div>
+<div style="display:flex;gap:8px;flex-wrap:wrap">
+<button class="btn dark" onclick="makeTransfer()">Create Transfer Code</button>
+<button class="btn light" onclick="openTransferImport()">Import Transfer Code</button>
+</div></div>
+<div class="muted">Before tax. Tap Calendar on a shift to add an iPhone Calendar alert 1 day before.</div></section>
 </main><button class="fab" onclick="openAdd()">＋ Add Shift</button><nav><button class="active" onclick="screen('dashboard',this)">Dashboard</button><button onclick="screen('roster',this)">Roster</button><button onclick="screen('earnings',this)">Earnings</button></nav>
 <dialog id="dlg"><form class="modal" onsubmit="save(event)"><h2 id="dlgTitle">Add Shift</h2><input type="hidden" id="sid"><label>Workplace</label><select id="job" onchange="defaultBreak()"></select><label>Date</label><input id="date" type="date" required><div class="formgrid"><div><label>Start</label><input id="start" type="time" required></div><div><label>Finish</label><input id="finish" type="time" required></div></div><label>Unpaid break (minutes)</label><input id="brk" type="number" min="0" step="5"><div class="actions"><button id="deleteBtn" type="button" class="btn danger" style="margin-right:auto;display:none" onclick="deleteShift()">Delete Shift</button><button type="button" class="btn light" onclick="dlg.close()">Cancel</button><button class="btn dark">Save</button></div></form></dialog>
-<script>
+<dialog id="transferDlg"><div class="modal"><h2 id="transferTitle">Transfer ShiftMate</h2>
+<div id="transferHelp" class="muted"></div>
+<label>Transfer code</label><textarea id="transferCode" style="width:100%;min-height:150px;border:1px solid #d0d5dd;border-radius:11px;padding:12px;font:12px ui-monospace,monospace"></textarea>
+<div class="actions"><button type="button" class="btn light" onclick="transferDlg.close()">Cancel</button><button id="transferAction" type="button" class="btn dark"></button></div>
+</div></dialog><script>
 let off=0;const $=x=>document.getElementById(x),pad=n=>String(n).padStart(2,"0");const money=n=>new Intl.NumberFormat("en-AU",{style:"currency",currency:"AUD"}).format(n);
 function getJobs(){return JSON.parse(localStorage.getItem("sm_jobs")||"[]")} function setJobs(x){localStorage.setItem("sm_jobs",JSON.stringify(x))}
 function shifts(){return JSON.parse(localStorage.getItem("sm_shifts")||"[]")}function put(x){localStorage.setItem("sm_shifts",JSON.stringify(x))}
@@ -45,6 +55,36 @@ function defaultBreak(){let j=getJobs()[+job.value];brk.value=j?j.break:0}functi
 function edit(id){let s=shifts().find(x=>String(x.id)===String(id));if(!s)return;dlgTitle.textContent="Edit Shift";sid.value=s.id;deleteBtn.style.display="block";job.value=s.job;date.value=s.date;start.value=s.start;finish.value=s.finish;brk.value=s.brk;dlg.showModal()}
 function save(e){e.preventDefault();if(start.value===finish.value){alert("Start and finish time cannot be the same.");return}let x=shifts(),s={id:sid.value||Date.now(),job:job.value,date:date.value,start:start.value,finish:finish.value,brk:+brk.value||0},i=x.findIndex(v=>String(v.id)===String(s.id));if(i>=0)x[i]=s;else x.push(s);put(x);dlg.close();render()}
 function deleteShift(){let id=sid.value;if(!id)return;if(!confirm("Delete this shift? This will remove it from your roster and earnings."))return;put(shifts().filter(s=>String(s.id)!==String(id)));dlg.close();render()}
+
+function enc64(s){let b=new TextEncoder().encode(s),x="";b.forEach(v=>x+=String.fromCharCode(v));return btoa(x)}
+function dec64(s){let x=atob(s),b=Uint8Array.from(x,c=>c.charCodeAt(0));return new TextDecoder().decode(b)}
+function makeTransfer(){
+  let payload={app:"ShiftMate",v:8,jobs:getJobs(),shifts:shifts()};
+  transferTitle.textContent="Copy from Safari";
+  transferHelp.textContent="Copy this code, then open ShiftMate from your Home Screen and choose Import Transfer Code.";
+  transferCode.value="SM8."+enc64(JSON.stringify(payload));
+  transferCode.readOnly=true;
+  transferAction.textContent="Copy Code";
+  transferAction.onclick=async()=>{try{await navigator.clipboard.writeText(transferCode.value);transferAction.textContent="Copied ✓"}catch(e){transferCode.select();document.execCommand("copy");transferAction.textContent="Copied ✓"}};
+  transferDlg.showModal();
+}
+function openTransferImport(){
+  transferTitle.textContent="Import to this app";
+  transferHelp.textContent="Paste the transfer code created by your Safari ShiftMate. This replaces only ShiftMate data stored in this app.";
+  transferCode.value="";transferCode.readOnly=false;transferAction.textContent="Import";
+  transferAction.onclick=importTransfer;transferDlg.showModal();
+}
+function importTransfer(){
+  try{
+    let c=transferCode.value.trim();if(!c.startsWith("SM8."))throw new Error();
+    let d=JSON.parse(dec64(c.slice(4)));
+    if(d.app!=="ShiftMate"||!Array.isArray(d.jobs)||!Array.isArray(d.shifts))throw new Error();
+    if(!confirm(`Import ${d.shifts.length} shift(s) and ${d.jobs.length} workplace(s) into this ShiftMate app?`))return;
+    setJobs(d.jobs);put(d.shifts);localStorage.setItem("sm_setup","1");localStorage.setItem("sm_transfer_imported","1");
+    setup.style.display="none";refreshJobs();transferDlg.close();render();alert("Transfer complete.");
+  }catch(e){alert("That transfer code is not valid. Please copy it again from ShiftMate in Safari.")}
+}
+
 function calendarShift(id){let s=shifts().find(x=>String(x.id)===String(id)),j=getJobs()[+s.job];if(!s||!j)return;let ed=s.date;if(s.finish<=s.start){let d=pd(s.date);d.setDate(d.getDate()+1);ed=ymd(d)}let stamp=(d,t)=>d.replaceAll("-","")+"T"+t.replace(":","")+"00";let ics=["BEGIN:VCALENDAR","VERSION:2.0","BEGIN:VEVENT",`UID:sm-${s.id}`,`DTSTART:${stamp(s.date,s.start)}`,`DTEND:${stamp(ed,s.finish)}`,`SUMMARY:${j.name} shift`,"BEGIN:VALARM","TRIGGER:-P1D","ACTION:DISPLAY",`DESCRIPTION:${j.name} shift tomorrow`,"END:VALARM","END:VEVENT","END:VCALENDAR"].join("\r\n");let u=URL.createObjectURL(new Blob([ics],{type:"text/calendar"})),a=document.createElement("a");a.href=u;a.download=`shift-${s.date}.ics`;a.click();setTimeout(()=>URL.revokeObjectURL(u),1000)}
 
 function safeMigration(){
